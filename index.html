@@ -1,399 +1,178 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Ace — Portfolio</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aceruins — Web Developer</title>
 
-  <!-- Fonts + Icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <style>
-    :root{
-      --bg:#f6fffb;
-      --card:#ffffff;
-      --muted:#6e7b78;
-      --accent:#0fa775;       /* primary green (matches your pic) */
-      --accent-2:#1eb58f;    /* brighter green */
-      --soft:#ecfdf6;
-      --deep:#071225;
-      --shadow: 0 10px 28px rgba(7,18,37,0.06);
-      --radius:16px;
-      --container:1120px;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      font-family:Inter,system-ui,Arial;
-      margin:0;color:var(--deep);
-      background:linear-gradient(180deg,var(--bg),#f3fdf8 60%);
-      -webkit-font-smoothing:antialiased;
-    }
-    .wrap{max-width:var(--container);margin:0 auto;padding:36px 20px}
-
-    /* Header */
-    header{position:sticky;top:0;background:rgba(255,255,255,0.8);backdrop-filter:blur(6px);z-index:40;border-bottom:1px solid rgba(7,16,33,0.03)}
-    .nav{display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:var(--container);margin:0 auto;padding:12px 20px}
-    .brand{font-weight:800;color:var(--accent);font-size:20px}
-    nav ul{display:flex;gap:22px;list-style:none;padding:0;margin:0;align-items:center}
-    nav a{color:#3b4b49;text-decoration:none;font-weight:600}
-    .btn-cta{background:var(--accent);color:#fff;padding:10px 16px;border-radius:10px;text-decoration:none;font-weight:700;box-shadow:0 8px 22px rgba(14,163,125,0.12)}
-
-    /* Hero */
-    .hero{padding:60px 0 18px;text-align:center}
-    .badge{display:inline-block;background:var(--soft);color:var(--accent-2);padding:8px 12px;border-radius:999px;font-weight:700;margin-bottom:12px}
-    h1{font-size:48px;margin:8px 0 6px;font-weight:800;color:var(--deep)}
-    .lead{max-width:880px;margin:0 auto;color:var(--muted);font-size:18px}
-    .hero-cta{display:flex;gap:12px;justify-content:center;margin-top:22px}
-    .btn-outline{background:transparent;border:2px solid rgba(15,167,117,0.16);padding:10px 16px;border-radius:10px;color:var(--accent);font-weight:700}
-
-    /* Stats */
-    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin:36px 0}
-    .stat{background:var(--card);padding:20px;border-radius:12px;box-shadow:var(--shadow);text-align:center;border:1px solid rgba(7,16,33,0.03)}
-    .stat h3{margin:0;color:var(--accent);font-size:24px}
-    .stat p{margin:8px 0 0;color:var(--muted);font-weight:600}
-
-    /* Section titles */
-    .section{padding:64px 0}
-    .section-title{text-align:center;margin-bottom:18px}
-    .section-title h2{font-size:30px;margin:0;font-weight:800}
-    .rule{display:block;width:86px;height:6px;background:var(--accent);margin:12px auto;border-radius:6px;opacity:0.95}
-
-    /* Services */
-    .filter-row{display:flex;gap:12px;justify-content:flex-start;margin-bottom:18px}
-    .pill{padding:10px 14px;border-radius:999px;border:1px solid rgba(7,16,33,0.06);background:#fff;font-weight:700}
-    .pill.active{background:var(--accent);color:#fff;border-color:transparent}
-    .services-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
-    .service-card{background:linear-gradient(180deg,#fff,#fbfffe);padding:20px;border-radius:14px;box-shadow:var(--shadow);border:1px solid rgba(7,16,33,0.03)}
-    .service-top{display:flex;gap:12px;align-items:center}
-    .service-card h4{margin:6px 0 8px;font-size:18px}
-    .service-card p{color:var(--muted);font-size:14px;margin-bottom:10px}
-    .tag{display:inline-block;background:#f6fffb;color:var(--accent);padding:6px 10px;border-radius:999px;font-weight:700;margin-right:8px;font-size:13px}
-    .small-muted{margin-left:auto;color:#9aa9a4;font-weight:700}
-
-    /* Skills */
-    .skills-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:28px}
-    .skill{display:flex;align-items:center;gap:14px;padding:10px 0}
-    .skill .icon{background:var(--soft);padding:10px;border-radius:10px;min-width:46px;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 14px rgba(14,163,125,0.04)}
-    .skill .meta{flex:1}
-    .skill .name{font-weight:800;margin-bottom:8px}
-    .progress{background:#eef9f4;border-radius:999px;height:12px;overflow:hidden}
-    .bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:999px;transition:width 1.2s ease}
-    .percent{font-weight:700;color:#5d6f6b;min-width:46px;text-align:right}
-
-    /* Contact */
-    .contact-row{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:22px}
-    .card{background:var(--card);padding:20px;border-radius:14px;box-shadow:var(--shadow);border:1px solid rgba(7,16,33,0.03)}
-    .form-group{margin-bottom:12px}
-    input[type="text"], input[type="email"], textarea{width:100%;padding:12px;border-radius:8px;border:1px solid #e7f6f0;background:#fbfffe;font-size:15px}
-    textarea{min-height:110px;resize:vertical}
-    .send-btn{background:var(--accent);border:none;padding:12px 18px;border-radius:10px;color:#fff;font-weight:800;cursor:pointer;width:100%}
-
-    .info-list{display:flex;flex-direction:column;gap:12px}
-    .info-item{background:#f6fffb;padding:12px;border-radius:10px;border:1px solid rgba(7,16,33,0.03);display:flex;align-items:center;gap:12px}
-    .info-item i{color:var(--accent);min-width:28px;text-align:center}
-    .collab{background:linear-gradient(180deg,var(--accent),var(--accent-2));color:#fff;padding:16px;border-radius:12px;font-weight:700}
-
-    /* Footer */
-    footer{padding:28px 0;background:#071225;color:#dfeff3;margin-top:44px}
-    .footer-inner{max-width:var(--container);margin:0 auto;padding:0 20px;display:flex;justify-content:space-between;align-items:center}
-    .socials a{color:#bfeee0;margin-left:12px;text-decoration:none}
-
-    /* Responsive */
-    @media (max-width:980px){
-      .stats{grid-template-columns:repeat(2,1fr)}
-      .services-grid{grid-template-columns:1fr}
-      .skills-grid{grid-template-columns:1fr}
-      .contact-row{grid-template-columns:1fr}
-      h1{font-size:36px}
-    }
-    @media (max-width:560px){
-      nav ul{display:none}
-      .wrap{padding:20px}
-      h1{font-size:30px}
-      .stats{grid-template-columns:1fr}
-    }
-  </style>
 </head>
 <body>
 
-  <header>
-    <div class="nav" role="navigation" aria-label="Main nav">
-      <div style="display:flex;align-items:center;gap:14px">
-        <div class="brand">Ace</div>
-      </div>
+  <!-- BACKGROUND PARTICLES -->
+  <div id="particles-js"></div>
 
-      <nav aria-label="primary">
-        <ul>
-          <li><a href="#about">About</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#skills">Skills</a></li>
-          <li><a href="#contact">Contact</a></li>
-          <li><a class="btn-cta" href="#contact">Get In Touch</a></li>
-        </ul>
-      </nav>
+  <!-- NAVBAR -->
+  <nav>
+    <div class="logo">Aceruins</div>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#contact" class="nav-btn">Get in Touch</a>
+  </nav>
+
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <span class="badge">Aspiring Web Developer</span>
+
+    <h1 class="hero-title">Aceruins</h1>
+
+    <p class="hero-sub">
+      Building Your Digital Presence, One Line at a Time — Quality websites at affordable prices.
+    </p>
+
+    <div class="hero-buttons">
+      <a href="#services" class="btn1">View Services</a>
+      <a href="#contact" class="btn2">Get a Quote</a>
     </div>
-  </header>
 
-  <main>
-    <!-- HERO -->
-    <section class="wrap hero" id="top" aria-labelledby="hero-title">
-      <span class="badge">Aspiring Web Developer</span>
-      <h1 id="hero-title">Ace</h1>
-      <p class="lead">Building Your Digital Presence, One Line at a Time — Quality websites at affordable prices. Let's build your online presence together!</p>
-
-      <div class="hero-cta">
-        <a class="btn-cta" href="#services">View Services <i class="fa-solid fa-arrow-right" style="margin-left:8px;font-size:13px"></i></a>
-        <a class="btn-outline" href="#contact">Get a Quote</a>
+    <div class="stats">
+      <div class="stat-box">
+        <h2 class="counter" data-target="3">0</h2>
+        <p>Projects In Progress</p>
       </div>
 
-      <!-- Stats -->
-      <div class="stats" aria-hidden="false">
-        <div class="stat"><h3>3+</h3><p>Projects In Progress</p></div>
-        <div class="stat"><h3>6+</h3><p>Services Offered</p></div>
-        <div class="stat"><h3>100+</h3><p>Learning Hours</p></div>
-        <div class="stat"><h3>100%</h3><p>Affordable Pricing</p></div>
+      <div class="stat-box">
+        <h2 class="counter" data-target="6">0</h2>
+        <p>Services Offered</p>
       </div>
-    </section>
 
-    <!-- ABOUT -->
-    <section id="about" class="section">
-      <div class="wrap">
-        <div class="section-title">
-          <h2>About Me</h2>
-          <span class="rule"></span>
-        </div>
-        <p style="text-align:center;color:var(--muted);max-width:900px;margin:10px auto 0">
-          I'm a beginner coder with a passion for web development. Currently learning HTML and modern web technologies, I'm dedicated to creating beautiful, functional websites for businesses and individuals. Despite being early in my journey, I have the skills and determination to bring your web projects to life. Let's work together to build something amazing!
-        </p>
+      <div class="stat-box">
+        <h2 class="counter" data-target="100">0</h2>
+        <p>Learning Hours</p>
       </div>
-    </section>
 
-    <!-- SERVICES -->
-    <section id="services" class="section">
-      <div class="wrap">
-        <div class="section-title">
-          <h2>Services I Offer</h2>
-          <span class="rule"></span>
-        </div>
-
-        <div class="filter-row" role="toolbar" aria-label="service filters">
-          <button class="pill active">All</button>
-          <button class="pill">Services</button>
-        </div>
-
-        <div class="services-grid" aria-live="polite">
-          <div class="service-card">
-            <div class="service-top">
-              <div class="icon" style="background:var(--soft);padding:10px;border-radius:10px"><i class="fa-solid fa-user"></i></div>
-              <h4>Personal Portfolio Websites <span class="small-muted">Available</span></h4>
-            </div>
-            <p>Showcase your work and skills with a stunning personal portfolio. Perfect for freelancers and artists who want an online presence.</p>
-            <div style="margin-top:8px"><span class="tag">Services</span><span class="tag">Portfolio</span><span class="tag">Personal</span></div>
-          </div>
-
-          <div class="service-card">
-            <div class="service-top">
-              <div class="icon" style="background:var(--soft);padding:10px;border-radius:10px"><i class="fa-solid fa-store"></i></div>
-              <h4>Small Business Websites <span class="small-muted">Available</span></h4>
-            </div>
-            <p>Get your business online with a professional website. Includes contact forms, galleries, and service showcases.</p>
-            <div style="margin-top:8px"><span class="tag">Business</span><span class="tag">Professional</span><span class="tag">Custom</span></div>
-          </div>
-
-          <div class="service-card">
-            <div class="service-top">
-              <div class="icon" style="background:var(--soft);padding:10px;border-radius:10px"><i class="fa-solid fa-rocket"></i></div>
-              <h4>Landing Pages <span class="small-muted">Available</span></h4>
-            </div>
-            <p>High-converting pages for products or services — fast, clean, and focused on conversions.</p>
-            <div style="margin-top:8px"><span class="tag">Marketing</span><span class="tag">Conversion</span><span class="tag">Modern</span></div>
-          </div>
-
-          <div class="service-card">
-            <div class="service-top">
-              <div class="icon" style="background:var(--soft);padding:10px;border-radius:10px"><i class="fa-solid fa-utensils"></i></div>
-              <h4>Restaurant & Cafe Websites <span class="small-muted">Available</span></h4>
-            </div>
-            <p>Mouth-watering websites for food businesses — menus, galleries, maps, and online ordering ready.</p>
-            <div style="margin-top:8px"><span class="tag">Food</span><span class="tag">Business</span><span class="tag">Local</span></div>
-          </div>
-
-          <div class="service-card">
-            <div class="service-top">
-              <div class="icon" style="background:var(--soft);padding:10px;border-radius:10px"><i class="fa-solid fa-code"></i></div>
-              <h4>Blog & Content Sites <span class="small-muted">Available</span></h4>
-            </div>
-            <p>Share your ideas in a clean, mobile-friendly blog designed to keep readers engaged.</p>
-            <div style="margin-top:8px"><span class="tag">Blogging</span><span class="tag">Content</span><span class="tag">Writing</span></div>
-          </div>
-
-          <div class="service-card">
-            <div class="service-top">
-              <div class="icon" style="background:var(--soft);padding:10px;border-radius:10px"><i class="fa-solid fa-heart"></i></div>
-              <h4>Event & Wedding Sites <span class="small-muted">Available</span></h4>
-            </div>
-            <p>Special sites for weddings and events with RSVP forms, galleries, and event details.</p>
-            <div style="margin-top:8px"><span class="tag">Events</span><span class="tag">Personal</span><span class="tag">Special</span></div>
-          </div>
-        </div>
+      <div class="stat-box">
+        <h2 class="counter" data-target="100">0</h2>
+        <p>Affordable Pricing</p>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- SKILLS -->
-    <section id="skills" class="section">
-      <div class="wrap">
-        <div class="section-title">
-          <h2>Skills & Expertise</h2>
-          <span class="rule"></span>
-        </div>
 
-        <div class="skills-grid" role="list">
-          <div>
-            <div class="skill">
-              <div class="icon"><i class="fa-solid fa-code"></i></div>
-              <div class="meta">
-                <div class="name">HTML & CSS</div>
-                <div class="progress"><div class="bar" data-percent="20"></div></div>
-              </div>
-              <div class="percent">20%</div>
-            </div>
+  <!-- ABOUT -->
+  <section id="about" class="section">
+    <h2>About Me</h2>
+    <p>
+      I'm a beginner coder with a passion for web development. Dedicated to creating beautiful, functional websites for businesses and individuals.  
+      Let’s work together to build something amazing!
+    </p>
+  </section>
 
-            <div class="skill">
-              <div class="icon"><i class="fa-solid fa-palette"></i></div>
-              <div class="meta">
-                <div class="name">Web Design</div>
-                <div class="progress"><div class="bar" data-percent="25"></div></div>
-              </div>
-              <div class="percent">25%</div>
-            </div>
 
-            <div class="skill">
-              <div class="icon"><i class="fa-solid fa-globe"></i></div>
-              <div class="meta">
-                <div class="name">Website Building</div>
-                <div class="progress"><div class="bar" data-percent="22"></div></div>
-              </div>
-              <div class="percent">22%</div>
-            </div>
-          </div>
+  <!-- SERVICES -->
+  <section id="services" class="section">
+    <h2>Services I Offer visit for more</h2>
 
-          <div>
-            <div class="skill">
-              <div class="icon"><i class="fa-solid fa-code-branch"></i></div>
-              <div class="meta">
-                <div class="name">JavaScript Basics</div>
-                <div class="progress"><div class="bar" data-percent="15"></div></div>
-              </div>
-              <div class="percent">15%</div>
-            </div>
+    <div class="services-grid">
 
-            <div class="skill">
-              <div class="icon"><i class="fa-solid fa-puzzle-piece"></i></div>
-              <div class="meta">
-                <div class="name">Problem Solving</div>
-                <div class="progress"><div class="bar" data-percent="30"></div></div>
-              </div>
-              <div class="percent">30%</div>
-            </div>
-
-            <div class="skill">
-              <div class="icon"><i class="fa-solid fa-seedling"></i></div>
-              <div class="meta">
-                <div class="name">Learning & Growth</div>
-                <div class="progress"><div class="bar" data-percent="95"></div></div>
-              </div>
-              <div class="percent">95%</div>
-            </div>
-          </div>
-        </div>
+      <div class="service-card pop">
+        <i class="fa-solid fa-user icon"></i>
+        <h3>Personal Portfolio Websites</h3>
+        <p>Make an impression online with a stunning personal website.</p>
       </div>
-    </section>
 
-    <!-- CONTACT -->
-    <section id="contact" class="section">
-      <div class="wrap">
-        <div class="section-title">
-          <h2>Get a Quote</h2>
-          <span class="rule"></span>
-        </div>
-        <p style="text-align:center;color:var(--muted);margin-top:6px">Need a website? Contact me for affordable pricing and let's discuss your project!</p>
-
-        <div class="contact-row">
-          <div class="card">
-            <h3 style="margin-top:0">Send a Message</h3>
-            <p style="color:var(--muted);margin-top:6px">Fill out the form below and I'll get back to you soon.</p>
-            <form id="contactForm" onsubmit="return handleSubmit(event)">
-              <div class="form-group"><input required type="text" id="name" placeholder="Your Name" autocomplete="name"></div>
-              <div class="form-group"><input required type="email" id="email" placeholder="Your Email" autocomplete="email"></div>
-              <div class="form-group"><textarea required id="message" placeholder="Your Message"></textarea></div>
-              <div><button class="send-btn" type="submit">Send Message <i class="fa-solid fa-paper-plane" style="margin-left:8px"></i></button></div>
-            </form>
-          </div>
-
-          <div style="display:flex;flex-direction:column;gap:12px">
-            <div class="card">
-              <div class="info-list">
-                <div style="display:flex;justify-content:space-between;align-items:center">
-                  <strong>prathvinaik0007@gmail.com</strong>
-                </div>
-                <div class="info-item"><i class="fa-solid fa-user"></i><div>@prathvinaik</div></div>
-                <div class="info-item"><i class="fa-brands fa-linkedin"></i><div>@prathvinaik</div></div>
-                <div class="info-item"><i class="fa-brands fa-twitter"></i><div>@prathvinaik</div></div>
-              </div>
-            </div>
-
-            <div class="collab">Let's Collaborate — I'm always interested in hearing about new projects and opportunities. Whether you have a question or just want to say hi, feel free to reach out!</div>
-          </div>
-        </div>
+      <div class="service-card pop">
+        <i class="fa-solid fa-shop icon"></i>
+        <h3>Business Websites</h3>
+        <p>Professional sites for small businesses and startups.</p>
       </div>
-    </section>
-  </main>
 
+      <div class="service-card pop">
+        <i class="fa-solid fa-rocket icon"></i>
+        <h3>Landing Pages</h3>
+        <p>High-converting landing pages for products and services.</p>
+      </div>
+
+      <div class="service-card pop">
+        <i class="fa-solid fa-utensils icon"></i>
+        <h3>Restaurant Websites</h3>
+        <p>Menus, galleries, maps, and online ordering integration.</p>
+      </div>
+
+      <div class="service-card pop">
+        <i class="fa-solid fa-code icon"></i>
+        <h3>Blog Sites</h3>
+        <p>Beautiful and mobile-friendly blog layouts.</p>
+      </div>
+
+      <div class="service-card pop">
+        <i class="fa-solid fa-heart icon"></i>
+        <h3>Event & Wedding Sites</h3>
+        <p>Personalized sites for weddings or special events.</p>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- SKILLS -->
+  <section id="skills" class="section">
+    <h2>Skills & Expertise</h2>
+
+    <div class="skill-bar">
+      <p>HTML & CSS</p>
+      <div class="bar"><div class="bar-fill" data-width="20%"></div></div>
+    </div>
+
+    <div class="skill-bar">
+      <p>Web Design</p>
+      <div class="bar"><div class="bar-fill" data-width="25%"></div></div>
+    </div>
+
+    <div class="skill-bar">
+      <p>Website Building</p>
+      <div class="bar"><div class="bar-fill" data-width="22%"></div></div>
+    </div>
+
+    <div class="skill-bar">
+      <p>JavaScript Basics</p>
+      <div class="bar"><div class="bar-fill" data-width="15%"></div></div>
+    </div>
+
+  </section>
+
+
+  <!-- CONTACT -->
+  <section id="contact" class="section">
+    <h2>Get a Quote</h2>
+
+    <form class="contact-form">
+      <input type="text" id="name" placeholder="Your Name" required>
+      <input type="email" id="email" placeholder="Your Email" required>
+      <textarea id="message" placeholder="Your Message" required></textarea>
+      <button class="send-btn" type="submit">Send Message</button>
+    </form>
+  </section>
+
+
+  <!-- FOOTER -->
   <footer>
-    <div class="footer-inner">
-      <div><span style="color:var(--accent);font-weight:800">Ace</span> © <span id="year"></span></div>
-      <div class="socials" aria-hidden="false">
-        <a href="#" aria-label="github"><i class="fa-brands fa-github"></i></a>
-        <a href="#" aria-label="linkedin"><i class="fa-brands fa-linkedin"></i></a>
-        <a href="#" aria-label="twitter"><i class="fa-brands fa-twitter"></i></a>
-      </div>
-    </div>
+    <p>© <span id="year"></span> Aceruins — All Rights Reserved.</p>
   </footer>
 
-  <script>
-    // set year
-    document.getElementById('year').textContent = new Date().getFullYear();
 
-    // animate skill bars when section visible
-    function animateBars(){
-      document.querySelectorAll('.bar').forEach(b=>{
-        const p = Number(b.dataset.percent) || 0;
-        requestAnimationFrame(()=> b.style.width = p + '%');
-      });
-    }
-    const skillsSection = document.getElementById('skills');
-    if ('IntersectionObserver' in window && skillsSection){
-      const obs = new IntersectionObserver((entries, o)=>{
-        entries.forEach(e=>{
-          if (e.isIntersecting){ animateBars(); o.disconnect(); }
-        });
-      },{threshold:0.28});
-      obs.observe(skillsSection);
-    } else animateBars();
+  <!-- SCRIPTS -->
+  <script src="script.js"></script>
 
-    // demo form handler (client only)
-    function handleSubmit(e){
-      e.preventDefault();
-      const name = document.getElementById('name').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const message = document.getElementById('message').value.trim();
-      if(!name || !email || !message){ alert('Please complete the form.'); return false; }
-      alert('Thanks, ' + name + '! Your message is noted (demo). To actually receive messages, connect the form to a backend or Formspree.');
-      e.target.reset();
-      return false;
-    }
-  </script>
 </body>
-            </html>
+          </html>
