@@ -1,68 +1,84 @@
-/* -------------------------------------
-   SMOOTH SCROLL FOR NAV LINKS
---------------------------------------*/
-document.querySelectorAll("nav ul li a, .nav-btn, .btn1, .btn2").forEach(link => {
-  link.addEventListener("click", e => {
-    if (link.getAttribute("href").startsWith("#")) {
-      e.preventDefault();
-      const target = document.querySelector(link.getAttribute("href"));
-      if (target) {
-        target.scrollIntoView({ behavior: "smooth" });
-      }
+/* -------------------------------------------------
+   SMOOTH SCROLL NAVIGATION
+--------------------------------------------------*/
+document.querySelectorAll("a[href^='#']").forEach(link => {
+  link.addEventListener("click", (e) => {
+    e.preventDefault();
+    document.querySelector(link.getAttribute("href")).scrollIntoView({
+      behavior: "smooth"
+    });
+  });
+});
+
+/* -------------------------------------------------
+   NAVBAR ACTIVE ON SCROLL
+--------------------------------------------------*/
+const sections = document.querySelectorAll("section");
+const navLinks = document.querySelectorAll("nav ul li a");
+
+window.addEventListener("scroll", () => {
+  let current = "";
+
+  sections.forEach(section => {
+    const sectionTop = section.offsetTop;
+    if (pageYOffset >= sectionTop - 200) {
+      current = section.getAttribute("id");
+    }
+  });
+
+  navLinks.forEach(link => {
+    link.classList.remove("active");
+    if (link.getAttribute("href") === "#" + current) {
+      link.classList.add("active");
     }
   });
 });
 
-/* -------------------------------------
-   COUNTER ANIMATION
---------------------------------------*/
+/* -------------------------------------------------
+   COUNTERS
+--------------------------------------------------*/
 const counters = document.querySelectorAll(".counter");
+let startedCount = false;
 
 function runCounters() {
   counters.forEach(counter => {
-    counter.innerText = "0";
-    const target = +counter.getAttribute("data-target");
-    const speed = 50;
+    let target = +counter.dataset.target;
+    let count = 0;
+    let step = Math.ceil(target / 50);
 
-    const update = () => {
-      let current = +counter.innerText;
-      let increment = Math.ceil(target / speed);
-
-      if (current < target) {
-        counter.innerText = current + increment;
-        setTimeout(update, 50);
+    let interval = setInterval(() => {
+      if (count < target) {
+        count += step;
+        counter.innerText = count;
       } else {
         counter.innerText = target;
+        clearInterval(interval);
       }
-    };
-
-    update();
+    }, 50);
   });
 }
 
-/* -------------------------------------
-   SKILL BAR ANIMATION
---------------------------------------*/
-const skillBars = document.querySelectorAll(".bar-fill");
+/* -------------------------------------------------
+   SKILL BARS ANIMATION
+--------------------------------------------------*/
+let skillStarted = false;
 
 function fillSkillBars() {
-  skillBars.forEach(bar => {
-    const width = bar.getAttribute("data-width");
-    bar.style.width = width;
+  const bars = document.querySelectorAll(".bar-fill");
+  bars.forEach(bar => {
+    bar.style.width = bar.getAttribute("data-width");
   });
 }
 
-/* -------------------------------------
-   SECTION REVEAL (POP + FADE)
---------------------------------------*/
-const revealElements = document.querySelectorAll(".section, .service-card");
+/* -------------------------------------------------
+   SCROLL REVEAL
+--------------------------------------------------*/
+const revealElements = document.querySelectorAll(".service-card, .project-card");
 
 function revealOnScroll() {
   revealElements.forEach(el => {
-    const position = el.getBoundingClientRect().top;
-    const screenHeight = window.innerHeight;
-
-    if (position < screenHeight - 100) {
+    const rect = el.getBoundingClientRect().top;
+    if (rect < window.innerHeight - 100) {
       el.style.transform = "translateY(0)";
       el.style.opacity = "1";
     }
@@ -71,79 +87,58 @@ function revealOnScroll() {
 
 window.addEventListener("scroll", () => {
   revealOnScroll();
-});
 
-/* -------------------------------------
-   RUN ON FIRST SCROLL INTO VIEW
---------------------------------------*/
-let started = false;
+  const skillsPos = document.querySelector("#skills").getBoundingClientRect().top;
+  const statsPos = document.querySelector(".stats").getBoundingClientRect().top;
 
-window.addEventListener("scroll", () => {
-  const skills = document.querySelector("#skills").getBoundingClientRect().top;
-  const stats = document.querySelector(".stats").getBoundingClientRect().top;
-  const screenHeight = window.innerHeight;
-
-  if (skills < screenHeight && !started) {
-    started = true;
-    fillSkillBars();
-  }
-
-  if (stats < screenHeight) {
+  if (!startedCount && statsPos < window.innerHeight - 150) {
+    startedCount = true;
     runCounters();
   }
+
+  if (!skillStarted && skillsPos < window.innerHeight - 150) {
+    skillStarted = true;
+    fillSkillBars();
+  }
 });
 
-/* -------------------------------------
+/* -------------------------------------------------
    PARTICLES BACKGROUND
---------------------------------------*/
+--------------------------------------------------*/
 particlesJS("particles-js", {
   "particles": {
     "number": {
-      "value": 80,
+      "value": 90,
       "density": { "enable": true, "value_area": 800 }
     },
     "color": { "value": "#00ff99" },
-    "shape": {
-      "type": "circle"
-    },
+    "shape": { "type": "circle" },
     "opacity": {
-      "value": 0.5,
-      "random": true
+      "value": 0.5, "random": true
     },
     "size": {
-      "value": 4,
-      "random": true
+      "value": 4, "random": true
+    },
+    "move": {
+      "enable": true, "speed": 2.2
     },
     "line_linked": {
       "enable": true,
-      "distance": 130,
       "color": "#00ff99",
-      "opacity": 0.6,
+      "opacity": 0.45,
       "width": 1
-    },
-    "move": {
-      "enable": true,
-      "speed": 3,
-      "direction": "none",
-      "random": true,
-      "straight": false,
-      "out_mode": "out"
     }
   },
   "interactivity": {
     "events": {
       "onhover": { "enable": true, "mode": "repulse" },
       "onclick": { "enable": true, "mode": "push" }
-    },
-    "modes": {
-      "repulse": { "distance": 150, "duration": 0.4 },
-      "push": { "particles_nb": 4 }
     }
   },
   "retina_detect": true
 });
 
-/* -------------------------------------
-   AUTO UPDATE YEAR
---------------------------------------*/
+/* -------------------------------------------------
+   UPDATE YEAR IN FOOTER
+--------------------------------------------------*/
 document.getElementById("year").textContent = new Date().getFullYear();
